@@ -1,0 +1,45 @@
+@import './mixins.scss';
+
+.heading-wrap {
+    margin-bottom: 90px;
+    @include md{
+        margin-bottom: 30px;
+    }
+
+    .heading {
+        position: relative;
+        font-weight: 700;
+        padding-left: 110px;
+        margin-bottom: 17px;
+
+        @include md {
+            padding-left: 50px;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: 17px;
+            left: 0;
+            width: 100px;
+            height: 5px;
+            background-color: #9cd322;
+
+            @include md {
+                top: 12px;
+                width: 40px;
+            }
+
+        }
+    }
+
+    .heading_wrap_content {
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.75);
+        padding-left: 110px;
+
+        @include md {
+            padding-left: 0px;
+        }
+    }
+}

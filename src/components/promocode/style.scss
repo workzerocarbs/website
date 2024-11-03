@@ -1,0 +1,20 @@
+.promo-code-container{
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+.redeemBtn{
+    min-width: 100px; // Ensure button width is fixed
+    padding: 8px 16px;
+   background-color: #9cd322; 
+   border: none;
+   border-radius: 4px;
+}
+
+  
+@media(min-width: 767.98px) {
+    .promo-code-container{
+      font-size: 13px;
+      margin-bottom: 0px;
+     
+    }
+ }

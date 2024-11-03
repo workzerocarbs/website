@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo_white.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZeroCarbs</title>
+    <meta name="description" content="Just for the health of it!" />
+    <meta property="og:title" content="Just for the health of it!" />
+    <meta property="og:description" content="Just for the health of it!" />
+    <meta
+      property="og:image"
+      content="https://zerocarbs.in/LOGO/logo_black.png"
+    />
+    <meta property="og:url" content="https://zerocarbs.in/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Just for the health of it!" />
+    <meta name="twitter:description" content="Just for the health of it!" />
+    <meta
+      name="twitter:image"
+      content="https://zerocarbs.in/LOGO/logo_black.png"
+    />
+    <!-- Meta Pixel Code -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "1010508467048614");
+      fbq("track", "PageView");
+    </script>
+    <!-- End Meta Pixel Code -->
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=1010508467048614&ev=PageView&noscript=1"
+        alt="Facebook Pixel"
+      />
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUmmxq__onPZGyroHzb95OnlqFX0kbss0&libraries=places"></script>
+  </body>
+</html>

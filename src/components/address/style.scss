@@ -1,0 +1,26 @@
+
+.save-address-detail-btn{
+
+    background-color: #9cd322 ;
+    color: white;
+    border: none;
+    padding: 10px 8px;
+}
+.sub-section-header{
+    margin-bottom: 0px;
+    font-weight: 600;
+    font-size: 16px;
+}
+input {
+    width: 100%;
+    border-radius: 2px;          
+    padding: 8px 12px;         
+    border: 1px solid lightgray;
+    transition: border-color 0.3s ease;}
+
+/* Add custom focus styling */
+input:focus {
+    outline: none;              /* Removes default outline */
+    border-color: #9cd322;      /* Changes border color on focus */
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5); /* Optional shadow for focus effect */
+}

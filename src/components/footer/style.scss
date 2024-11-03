@@ -1,0 +1,69 @@
+@import '../../mixins.scss';
+
+.site-footer {
+    font-size: 14px;
+    color: #888;
+
+    a {
+        text-decoration: none;
+        color: #999;
+    }
+
+    .inner {
+        padding-bottom: 70px;
+        background: #f8f9fa;
+
+        @include md {
+            padding-bottom: 5px;
+        }
+
+        &.first {
+            padding-top: 80px;
+
+            @include md{
+                padding-top: 45px;
+            }
+        }
+
+        &.dark {
+            padding-bottom: 30px;
+        }
+
+        .widget {
+            margin-bottom: 30px;
+
+            h3 {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 20px;
+                color: #000;
+                font-family: "Poppins", sans-serif;
+            }
+
+            p{
+                margin-bottom: 0;
+            }
+
+            .social {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .links {
+                li {
+                    display: block;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .middle_widget {
+            padding-left: 100px;
+
+            @include md {
+                padding-left: 0;
+            }
+        }
+    }
+}

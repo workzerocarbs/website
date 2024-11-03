@@ -1,0 +1,31 @@
+.orderConfirmation{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    color: black;
+    font-weight: 500;
+    padding-top: 80px;
+
+    .thankyou{
+        font-size: 27px;
+        font-weight: 500;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    .contact_number, .contact_email, .contact_location{
+        color:green;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+    .view-order-details-btn{
+        padding: 10px 20px;
+    border: none;
+    background: green;
+    color: white;
+    }
+
+}
+

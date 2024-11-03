@@ -1,0 +1,49 @@
+.ordered-item-description-container{
+    display: flex;
+    gap:10px
+}
+
+.ordered-item-container{
+    margin-inline: 10px;
+    display: flex;
+    gap:10px;
+  //  justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+}
+.image-container {
+    flex: 0 0 auto; 
+    width: 20%; 
+    height: 100px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.image-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ordered-item-description-container {
+width: 72%;
+}
+.ordered-item-description-container .food-type{
+width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+padding-top: 26px;
+}
+.ordered-item-description{
+display: flex;
+flex-direction: column;
+padding: 10px;
+}
+.ordered-item-name, .ordered-item-price{
+    font-weight: 600;
+    font-size: 15px;
+}
+.ordered-item-desc{
+    font-size: 14px;
+}

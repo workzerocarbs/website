@@ -1,0 +1,247 @@
+@import '../../mixins.scss';
+
+.cartContainer {
+    padding: 7rem 0 5rem;
+
+    h2 {
+        font-size: 26px;
+
+        @media(max-width:768px) {
+            font-size: 22px;
+        }
+
+        @media(max-width:540px) {
+            font-size: 20px;
+        }
+    }
+
+    .col-md-12 {
+        margin-top: 10px;
+        margin-bottom: 30px;
+
+        .customer-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+            padding: 20px 15px;
+            background: #f7ffe610;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.212);
+
+            @media(max-width:400px) {
+                grid-template-columns: 1fr;
+            }
+
+            .customer-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+
+                label {
+                    font-size: 16px;
+                    font-weight: 700;
+
+                    @media(max-width:768px) {
+                        font-size: 13px;
+                    }
+                }
+
+                input, textarea {
+                    width: 100%;
+                    height: 40px;
+                    font-size: 14px;
+                    padding: 0 10px;
+                    border-radius: 5px;
+                    border: 1px solid #d6d6d6;
+
+                    &:focus-visible {
+                        outline: none;
+                    }
+                }
+                textarea{
+                    padding: 7px 10px;
+                }
+
+                p {
+                    font-size: 13px;
+                    color: red;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+
+        @media(max-width:576px) {
+            font-size: 14px;
+        }
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1.5px solid grey;
+    }
+
+    .form-group button {
+        padding: 10px 20px;
+        background-color: #9cd322;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+
+        @media(max-width:400px) {
+            padding: 10px;
+            font-size: 13px;
+            text-transform: capitalize;
+        }
+    }
+
+
+
+    .modal-overlay {
+        &.couponsModal {
+            .modal-content {
+                height: 450px;
+            }
+        }
+    }
+
+    .otpModal {
+        .form-label {
+            margin-bottom: 25px;
+        }
+
+        .inputContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+            margin-top: 10px;
+
+            @media(max-width:400px) {
+                gap: 10px;
+            }
+
+            input {
+                width: 65px;
+                height: 65px;
+                font-size: 22px;
+                padding: 10px;
+                text-align: center;
+                border-radius: 5px;
+                border: 2px solid #55525c34;
+                outline: none;
+                transition: all 0.1s;
+
+                @media(max-width:400px) {
+                    width: 100%;
+                    height: 45px;
+                }
+                @media (min-width: 400px) and (max-width: 455px) {
+                        height: 50px;
+                        width: 50px;
+                }
+
+                &:focus {
+                    border: 2.5px solid #83b31b;
+                }
+
+                &:disabled {
+                    background-color: #000;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        #otpError {
+            margin-top: 10px;
+            color: red;
+        }
+
+        .newOtp {
+            padding: 0;
+            margin-top: 18px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+
+            button {
+                color: blue;
+                background-color: transparent;
+                border: 0;
+                outline: none;
+            }
+
+            @media(max-width:400px) {
+                font-size: 13px;
+            }
+        }
+
+        .sendOtp {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+
+            .btn {
+                background-color: #9cd322;
+                color: #fff;
+                width: 125px;
+                height: 48px;
+                box-shadow: none;
+
+                &:active {
+                    background-color: #83b31b;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+.place-order-button, .verify-otp-button{
+    background-color: #9cd322 !important
+}
+
+.place-order-button:hover, .verify-otp-button:hover{
+    background-color: #7DA91B !important
+}
+
+.dots-loader {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .dots-loader span {
+    width: 10px;
+    height: 10px;
+    background-color: white; /* Set this to match your button text color */
+    border-radius: 50%;
+    animation: blink 0.8s infinite alternate;
+  }
+  
+  .dots-loader span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .dots-loader span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes blink {
+    0% { opacity: 0.2; transform: translateY(0); }
+    100% { opacity: 1; transform: translateY(-3px); }
+  }
+  
