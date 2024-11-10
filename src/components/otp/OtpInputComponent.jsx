@@ -8,6 +8,8 @@ function ReusableOTPInput({
   resendTimeout = 30,
   phonenNumber,
   placeholder = '_',
+  className, 
+  isSmallScreen = false
 }) {
   const [otp, setOtp] = useState('');
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -38,10 +40,10 @@ function ReusableOTPInput({
   };
 
   return (
-    <div className='d-flex flex-column align-items-center gap-2'>
-        <h4>Verify Account</h4>
-          <p className='mb-0 text-center'>An OTP has been sent to your entered mobile number {phonenNumber}</p>
- <div className='d-flex justify-content-center '>
+    <div className={`d-flex flex-column gap-2 mt-2 ${isSmallScreen ? '': ''} `}>
+        {/* <h4>OTP Verification</h4>
+          <p className='mb-0 text-center'>Enter OTP (Sent {phonenNumber})</p> */}
+ <div className={`d-flex ${isSmallScreen ? 'justify-content-center': ''}`}>
     
 
       <OtpInput
@@ -53,14 +55,16 @@ function ReusableOTPInput({
           <input
             {...inputProps}
             style={{
-              width: '40px',
-              height: '40px',
-              fontSize: '18px',
+              width: isSmallScreen ? '70px': '40px',
+              height: isSmallScreen ? '50px': '40px',
+              fontSize: isSmallScreen ?  '25px': '20px',
               borderRadius: '4px',
               border: '1px solid lightgray',
               textAlign: 'center',
-              margin: '0 5px',
+              margin: '0 2px',
               outline: 'none',
+              marginRight: '5px',
+              marginLeft:'5px'
             }}
             onFocus={(e) => (e.target.style.borderColor = '#9cd322')}
             onBlur={(e) => (e.target.style.borderColor = 'lightgray')}
@@ -72,22 +76,27 @@ function ReusableOTPInput({
     
     </div>
       {/* Resend Button */}
-      <div className='d-flex flex-column align-items-center gap-2' style={{ marginTop: '15px' }}>
-      <p className='mb-0 text-center'>Didn't receive the code? <span style={{fontWeight: "500"}}>Resend {isResendDisabled && `in ${timer}s`}</span></p>
+      <div className='d-flex flex-column  gap-2' style={{ marginTop: '15px' }}>
+      <p className='mb-0 text-center'>Didn't receive the code? <span style={{fontWeight: "500"}}>Resend {isResendDisabled && (
+    <>
+        in <span className="fw-bold">{timer}</span>s
+    </>
+)}</span></p>
         <button
           onClick={handleResend}
           disabled={isResendDisabled}
           style={{
+            width: isSmallScreen ?? '100%',
             padding: '10px 15px',
             fontSize: '0.9rem',
             color: isResendDisabled ? 'gray' : 'black',
             backgroundColor: '#9cd322',
             border: 'none',
             cursor: isResendDisabled ? 'not-allowed' : 'pointer',
-            borderRadius: '4px'
+            borderRadius: '0px'
           }}
         >
-          Resend OTP 
+          Enter OTP 
         </button>
       </div>
     </div>

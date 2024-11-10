@@ -12,6 +12,22 @@
     font-weight: 600;
 
 }
+.confirm-location-btn{
+  box-sizing: border-box;
+ 
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #9cd322;
+    padding: 10px 10px;
+   
+    border-radius: 0px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
 .map-action-btns{
     width: 100%;
     position: absolute;
@@ -24,9 +40,11 @@
 }
 
 .billing-details-container{
+  height: 100%;
 position: absolute;
-top:60px;
-background-color: white;
+top:0px;
+bottom: 0px;
+background-color: transparent;
 width: 100%;
 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 

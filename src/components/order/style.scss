@@ -1,6 +1,8 @@
 @import '../../mixins.scss';
-.orderSummary .itemImageContainer{
-
+.orderSummary .food-type{
+height: 15px;
+width: 15px;
+display: inline-block;
 }
 
 .itemImageContainer img{
@@ -150,6 +152,7 @@
 
  .order-summary {
      .addMore {
+        margin-inline-end: 8px;
          a {
              @media(max-width:576px) {
                  font-size: 13px;

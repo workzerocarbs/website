@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import '../payment/style.scss';
 import Modal from '../../components/modal/Modal';
 import Button from '@mui/material/Button';
@@ -25,6 +25,8 @@ import PaymentSummary from '../../components/payment/paymentSummary/PaymentSumma
 import PaymentMethod from '../../components/payment/paymentMethod/PaymentMethod';
 import PhoneNumberInput from '../../components/phonenumber/PhoneNumber';
 import PromoCodeComponent from '../../components/promocode/PromoCode';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 const Payment = () => {
     const [coupons, setCoupons] = useState([])
     const navigate = useNavigate()
@@ -36,9 +38,17 @@ const Payment = () => {
       });
     const [isModalVisible, setModalVisible] = useState(false);
     const [verifyOtpModal, setVerifyOtpModal] = useState(false);
+    const [isBillingModalVisible, setBillingModalVisible] = useState(false)
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [appliedPromoCode, setAppliedPomoCode] = useState(null);
-
+    const [addressFormDetails, setAddressFormDetails] = useState({
+        buildingHouseNo: '',
+        society:  '',
+        landmark: '',
+        contactDetails: '',
+        phoneNo: '',
+        addressType: 'Home',
+    })
     const [otpInputs, setOtpInputs] = useState(['', '', '', '', '', '']);
     const [otpError, setOtpError] = useState('');
     const [generatedOtp, setGeneratedOtp] = useState('');
@@ -70,7 +80,33 @@ const Payment = () => {
     const [showOTPInputField, setShowOTPInputField] = useState(false)
     const[isOtpVerified, setIsOtpVerified] = useState(false)
     const [loading, setLoading] = useState(false);
+    const [showAddressDetailForm, setShowAddressDetailForm] = useState(false);
+    const sheetRef = useRef(null);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 480);
+    const contentRef = useRef(null);
+    const [snapPoints, setSnapPoints] = useState([0.4]);
     // Handler to update the state when the payment method changes
+
+
+    useLayoutEffect(() => {
+        if ( isSmallScreen && contentRef.current) {
+          const contentHeight = contentRef.current.offsetHeight;
+          const screenHeight = window.innerHeight;
+          const snapPoint = Math.min(contentHeight / screenHeight, 0.5);
+            console.log(snapPoint)
+          // Ensure snap points are in descending order
+          if (snapPoint > 0 && snapPoint < 1) {
+            setSnapPoints([1, 0.5]); // Full height first, then the content-based height
+          } else {
+            setSnapPoints([1]); // Fallback to full height if snap point is invalid
+          }
+        }
+      }, [ isSmallScreen, showOTPInputField, showAddressDetailForm]);
+
+
+    const showForm = () => {
+        setShowAddressDetailForm(true);
+      };
     const handlePaymentChange = (value) => {
         setPaymentMethod(value);
     };
@@ -215,24 +251,13 @@ const Payment = () => {
     // Send OTP
     const handleSendOtp = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-          setShowOTPInputField(true) // Hide loader after 20 seconds
-          // Continue with any other actions if needed after the timeout
-        }, 20000);
-        
+        setLoading(true);  
         const formErrors = validateForm();
-        if (Object.keys(formErrors).length === 0) {
+       
             try {
-                console.log("sendotp")
-                const response = await axios.post('https://api.zerocarbs.in/api/web/order/send-otp', {
-                    name,
-                    email,      
-                    phone: phoneNumber,
-                    address,
-                    state,
-                    pincode: pin
+                console.log("sendotp", phoneNumber)
+                const response = await axios.post('https://api.zerocarbs.in/api/web/order/send-otp',{
+                    "phone":  phoneNumber.replace(/^(\+91)/, '')
                 }, {
                     headers: {
                         'Content-Type': 'application/json'
@@ -241,18 +266,27 @@ const Payment = () => {
                 console.log(response.data);
 
                 if (response.status === 200) {
+                    setLoading(false);
                     setGeneratedOtp(response.data.otp);
-                    setVerifyOtpModal(true);
+                    setShowOTPInputField(true);
+                    toast.success("OTP sent successfully!", {
+                        position: "top-right"
+                      });
                 } else {
+                    setLoading(false);
+                    toast.error(`Failed to send OTP:, ${response.data.message}`, {
+                        position: "top-right"
+                      });
                     console.error("Failed to send OTP:", response.data.message);
                 }
             } catch (error) {
+                setLoading(false);
+                toast.error("Failed to send OTP!", {
+                    position: "top-right"
+                  });
                 console.error("Error sending OTP:", error);
             }
-        } else {
-            setErrors(formErrors);
-            customerInfoRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
+        
     };
 
     const handleOtpKeyDown = (event) => {
@@ -532,6 +566,7 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
 const handleSaveAddress = (data) => {
     // Handle the address data after form submission
     console.log('Saved Address Data:', data);
+   
     // You can perform additional actions here, such as sending the data to an API
   };
 
@@ -555,20 +590,212 @@ const handleSaveAddress = (data) => {
     // Your logic to resend OTP
   };
 
-  const handleOnComplete = (otp)=>{
+  const handleOnComplete = async(otp)=>{
     console.log("otp value", otp)
-    setIsOtpVerified(true)
+
+    try {
+        // Verify OTP
+        const response = await axios.post('https://api.zerocarbs.in/api/web/order/verify-otp', {
+            phone: phoneNumber.replace(/^(\+91)/, ''),
+            otp: otp
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log("OTP Verification Response:", response);
+        console.log(response.data.message);
+
+
+        if (response.status === 200 && response.data.success) {
+            console.log("enters here only")
+            setTimeout(() => {
+               
+                setOtpInputs(['', '', '', '', '', '']);
+                setOtpVerified(true);
+                console.log(response.data)
+               
+                setOrderId(response.data.data.id)
+                setTaxId(response.data.data.tax_id)
+                setIsOtpVerified(true)
+                // setTimeout(() => {
+                //     setVerifyOtpModal(false);
+                // }, 1000);
+            }, 2500);
+        } else {
+            console.log("enters in else")
+            toast.error(response.data.message, {
+                position: "top-right"
+              });
+           // setOtpError(response.data.message || 'Invalid OTP. Please try again.');
+           // setButtonText('Verify OTP');
+        }
+    } catch (error) {
+        toast.error(error?.response?.data?.message, {
+            position: "top-right"
+          });
+      
+    }
+   
   }
+
+
+
+
+
+const handleResize = () => {
+    setIsSmallScreen(window.innerWidth < 480);
+    if(window.innerWidth > 480){
+        sheetRef.current?.hide(); // Close the modal
+    }
+};
+
+useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+}, []);
+
+
+
+const handleSaveAddressDetails = (data) => {
+    //setAddressDetails(data);
+    setAddressFormDetails(data)
+    setShowAddressDetailForm(false)
+    console.log('Saved Address Details:', data);
+  };
+
+  const hideAddressForm = () => {
+    console.log("listenetnetn")
+    setShowAddressDetailForm(false);
+  };
+
+
+
+
+  const handleInitiatePayment = async()=>{
+
+    try {
+        // Verify OTP
+        const response = await axios.post('https://api.zerocarbs.in/api/web/order/payment/initiate-payment', {
+            "order_id": orderId,
+            "amount": 10,
+            "redirectUrl": "{{base_url}}/web/order/payment-callback/1"
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log("Payment Response:", response);
+        
+
+
+        if (response.status === 200 && response.data.success) {
+           
+        } else {
+          
+        }
+    } catch (error) {
+        toast.error(error?.response?.data?.message, {
+            position: "top-right"
+          });
+      
+    }
+   
+  }
+
+
+
+
     return (
         <section className="cartContainer" ref={customerInfoRef}>
-<button onClick={() => setOpen(true)}>Open sheet</button>
+              <ToastContainer />
 {/* 
 <button onClick={()=> setLocationModalOpen(true)}>Show Map</button> */}
-<Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[0.8, 1]}>
+
+{ isSmallScreen && isOtpVerified && <MapAddress onSave={handleSaveAddressDetails} initialData={addressFormDetails}  showAddressDetailForm={showAddressDetailForm} hideForm={hideAddressForm} showForm={showForm} isSmallScreen={isSmallScreen}/>}
+<Sheet isOpen={isSmallScreen} onClose={() => setOpen(false)}  detent="content-height">
         <Sheet.Container>
           <Sheet.Header />
           <Sheet.Content>
-<BillingDetailsForm initialData={initialFormData} onSave={handleSaveAddress}/>
+
+
+<>
+{
+        isSmallScreen &&  !showOTPInputField && <div className='d-flex flex-column gap-2' style={{border: "1px solid lightgrey", padding: "20px 15px"}}>
+        <div className='d-flex flex-column'>
+       <div className='d-flex gap-2 '>
+       <IoChevronBackCircleSharp color='#9cd322' size={40}/>
+      
+       <div className='d-flex flex-column'>
+        <h5 className='mb-0 fw-bold'>Welcome</h5>
+        <div className='d-flex justify-content-center mt-1 mb-2'>
+            <p className='mb-3'>To place your order now, log into your account</p>
+        </div>
+        
+      
+    
+     
+        </div>
+       </div>
+       <PhoneNumberInput value={phoneNumber} onChange={setPhoneNumber}/>
+       <button 
+      className='btn w-100 mt-5 mb-2' 
+      style={{ backgroundColor: "#9cd322", display: 'flex', alignItems: 'center', justifyContent: 'center',  cursor: loading ? 'not-allowed' : 'pointer', borderRadius: "0px", padding: "10px 15px"}}  
+      onClick={handleSendOtp} 
+      disabled={loading} // Disable button while loading
+    >
+      {loading ? (
+       <div className="dots-loader p-2">
+       <span></span><span></span><span></span>
+     </div> // Bootstrap loader
+      ) : (
+        "Continue"
+      )}
+    </button>
+
+  <div className='d-flex justify-content-center text-center mt-2'>
+
+  <span>By continuing you agree to our Terms of Use &
+  Privacy Policy</span>
+  </div>
+        </div>
+       
+     </div>
+       }
+
+
+       {showOTPInputField && <div style={{padding: "20px 15px"}}>
+<div className='d-flex gap-2 mt-1 mb-3'>
+       <IoChevronBackCircleSharp color='#9cd322' size={40}/>
+      
+       <div className='d-flex flex-column'>
+        <h5 className='mb-0 fw-bold'>OTP Verification</h5>
+        <p className='mb-0 text-center mt-2'>Enter OTP (Sent {phoneNumber})</p> 
+        </div>
+        </div>
+
+        <ReusableOTPInput
+        numInputs={6} // Number of OTP digits
+        resendTimeout={30} // Resend timeout in seconds
+        onSubmit={handleOtpSubmit}
+        onComplete={handleOnComplete}
+        phonenNumber={phoneNumber}
+        onResend={handleResendOtp}
+        isSmallScreen={true}
+      />
+</div> }
+
+
+
+
+
+
+
+</>
+            
+{showAddressDetailForm && isSmallScreen &&<BillingDetailsForm initialData={initialFormData} onSave={handleSaveAddress}/>}
 
           </Sheet.Content>
         </Sheet.Container>
@@ -578,11 +805,11 @@ const handleSaveAddress = (data) => {
 
 
 <div className='row'>
-    <div className='col-md-6 d-flex flex-column gap-2'>
+    {!isSmallScreen && <div className='col-md-6 d-flex flex-column gap-2'>
         {isOtpVerified && <div className='d-flex gap-2 align-items-center' style={{border: "1px solid lightgrey", padding: "20px 15px"}}>
-        <IoChevronBackCircleSharp color='#9cd322'/>
+        <IoChevronBackCircleSharp color='#9cd322' size={40}/>
       
-      <p className='mb-0'>Logged in as (+91 1234567890)</p>
+      <p className='mb-0'>Logged in as ({phoneNumber})</p>
         </div>}
       
        {
@@ -622,28 +849,42 @@ const handleSaveAddress = (data) => {
        }
 
         {showOTPInputField && !isOtpVerified && <div className='d-flex flex-column gap-2' style={{border: "1px solid lightgrey", padding: "20px 15px"}}>
-      <ReusableOTPInput
+     
+        <div className='d-flex gap-2 mt-1 mb-3'>
+       <IoChevronBackCircleSharp color='#9cd322' size={40}/>
+      
+       <div className='d-flex flex-column'>
+        <h5 className='mb-0 fw-bold'>OTP Verification</h5>
+        <p className='mb-0  mt-2'>Enter OTP (Sent {phoneNumber})</p> 
+        <ReusableOTPInput
         numInputs={6} // Number of OTP digits
         resendTimeout={30} // Resend timeout in seconds
         onSubmit={handleOtpSubmit}
         onComplete={handleOnComplete}
-        phonenNumber={1234567890}
+        phonenNumber={phoneNumber}
         onResend={handleResendOtp}
       />
+
+        </div>
+        </div>
+     
+     
+     
+      
       
         </div>} 
-       {!showPickDeliveryAddress && isOtpVerified && <div className='d-flex gap-1 align-items-center' style={{border: "1px solid lightgrey", padding: "15px 15px"}}
+       {!showPickDeliveryAddress && <div className='d-flex gap-1 align-items-center' style={{border: "1px solid lightgrey", padding: "15px 15px", cursor: "pointer"}}
          onClick={()=>{setShowPickDeliveryAddress(true)}}>
-        <MdLocationOn color='#9cd322' />
+        <MdLocationOn color='#9cd322' size={40}/>
         <p className='mb-0'>Choose Delivery Address</p>
         </div>
 
 
        }
 
-      {showPickDeliveryAddress &&   <div className='d-flex flex-column gap-1' style={{border: "1px solid lightgrey", padding: "15px 15px"}}>
+      {showPickDeliveryAddress &&   <div className='d-flex flex-column gap-1' style={{border: "1px solid lightgrey", padding: "15px 15px", cursor: "pointer"}}>
                 <div className='d-flex align-items-center gap-2'>
-                <MdLocationOn  color='#9cd322'/>
+                <MdLocationOn  color='#9cd322' size={40}/>
                 <p className='mb-0'>Choose Delivery Address</p>
                         
                 </div>
@@ -651,15 +892,15 @@ const handleSaveAddress = (data) => {
                     setLocationModalOpen(true)
                 }}>
                             <div className='d-flex align-items-center gap-2'>
-                            <IoIosAddCircle  color='#9cd322'/> <p className='mb-0'>Add New Address</p>
+                            <IoIosAddCircle  color='#9cd322' size={40}/> <p className='mb-0'>Add New Address</p>
                             </div>
                         </div>
         </div>}
       {
-        !showPaymentMethod  &&  isOtpVerified && <div className='d-flex gap-1 align-items-center' style={{border: "1px solid lightgrey", padding: "15px 15px"}} onClick={()=>{
+        !showPaymentMethod   && <div className='d-flex gap-1 align-items-center mb-2' style={{border: "1px solid lightgrey", padding: "15px 15px"}} onClick={()=>{
             setShowPaymentMethod(true)
         }}>
-    <GiWallet color='#9cd322' /> <p className='mb-0'>Choose Payment Method</p>
+    <GiWallet color='#9cd322' size={40} /> <p className='mb-0'>Choose Payment Method</p>
     </div>
       }
 
@@ -669,7 +910,7 @@ const handleSaveAddress = (data) => {
 
 
 
-    </div>
+    </div>}
    <div className='col-md-6'>
    <OrderSummary
       cart={cart}
@@ -826,7 +1067,7 @@ const handleSaveAddress = (data) => {
             </Modal>
           
             {/* Verify OTP */}
-            <Modal isVisible={verifyOtpModal} onClose={handleCloseOtpModal}>
+            {/* <Modal isVisible={verifyOtpModal} onClose={handleCloseOtpModal}>
                 <form className="otpModal" onSubmit={handleOtpSubmit} onKeyDown={handleOtpKeyDown}>
                     <h4 className='form-label'>Enter OTP</h4>
                     <div className="inputContainer">
@@ -847,16 +1088,16 @@ const handleSaveAddress = (data) => {
                         <button type="submit" className='btn'>{buttonText}</button>
                     </div>
                 </form>
+            </Modal> */}
+
+
+
+            <Modal isVisible={isBillingModalVisible} onClose={handleCloseOtpModal} >
+                <BillingDetailsForm initialData={addressFormDetails} onSave={handleSaveAddress}/>
             </Modal>
 
-
-
-            <Modal isVisible={verifyOtpModal} onClose={handleCloseOtpModal}>
-                <BillingDetailsForm initialData={initialFormData} onSave={handleSaveAddress}/>
-            </Modal>
-
-            <Modal isVisible={isLocationModalOpen} onClose={()=>{setLocationModalOpen(false)}}>
-                <MapAddress/>
+            <Modal isVisible={isLocationModalOpen} onClose={()=>{setLocationModalOpen(false); setShowAddressDetailForm(false)}} className='p-0'>
+                <MapAddress onSave={handleSaveAddressDetails} initialData={addressFormDetails}  showAddressDetailForm={showAddressDetailForm} hideForm={hideAddressForm} showForm={showForm} />
                             
 
             </Modal>

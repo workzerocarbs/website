@@ -9,7 +9,7 @@ import BillingDetailsForm from '../address/BilllingDetailsForm';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import { IoIosClose } from "react-icons/io";
 import Loader from '../loader/Loader';
-
+import { IoChevronBackCircleSharp } from "react-icons/io5";
 const mapStyles = {
   default: [],
   hide: [
@@ -30,10 +30,10 @@ const mapStyles = {
   ],
 };
 
-function MapAddress() {
+function MapAddress({onSave, initialData, showAddressDetailForm, hideForm, showForm , isSmallScreen}) {
   const containerStyle = {
     width: '100%', // Make the map responsive
-    height: '400px',
+    height: isSmallScreen ? '300px':'400px',
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -56,7 +56,7 @@ function MapAddress() {
     setMap(map);
     mapRef.current = map;
   }, []);
-  const [showAddressDetailForm, setShowAddressDetialForm] = useState(false)
+ // const [showAddressDetailForm, setShowAddressDetialForm] = useState(false)
   const [addressInput, setAddressInput] = useState(address);
   const [isBlurred, setIsBlurred] = useState(false);
   const [showSearchAutoCompleteField, setShowSearchAutoCompleteField] = useState(false)
@@ -225,15 +225,22 @@ function MapAddress() {
       </div>
       </GoogleMap>
 
-      <div style={{ marginTop: '20px' }} className='d-flex justify-content-between align-items-center'>
+
+
+
+<>
+{!showAddressDetailForm && <>
+
+  <div style={{ marginTop: '20px' }} className='d-flex justify-content-between align-items-center'>
   <div className='d-flex align-items-center' style={{ maxWidth: '70%' }}>
-    <CiMapPin color='#9cd322' fontSize={24} className='me-2' />
+    <CiMapPin color='#9cd322' fontSize={60} className='me-2' />
     <p className='mb-0 text-truncate' style={{ flexGrow: 1 }}>{address}</p>
   </div>
-  <button className='mapButton' style={{ whiteSpace: 'nowrap' }} onClick={()=>{
-    setIsBlurred(true)
-    setShowSearchAutoCompleteField(false)
-setShowAddressDetialForm(true)
+  <button className='mapButton me-2' style={{ whiteSpace: 'nowrap' }} onClick={()=>{ showForm();
+  console.log("ckldkdl")
+    setIsBlurred(true);
+    setShowSearchAutoCompleteField(false);
+   
   }}>Change</button>
 
 
@@ -242,6 +249,11 @@ setShowAddressDetialForm(true)
 
 
 </div>
+<button className='confirm-location-btn mt-2' onClick={showForm}>Confirm location and Proceed</button>
+</>}
+
+</>
+      
 
 {
   showSearchAutoCompleteField && <div className='map-search-container'>
@@ -294,8 +306,9 @@ setShowAddressDetialForm(true)
                       </PlacesAutocomplete>
   </div>
 }
-{showAddressDetailForm && <div className='billing-details-container top-10'>
-  <BillingDetailsForm/>
+{showAddressDetailForm && !isSmallScreen && <div className='billing-details-container top-10'>
+  <IoChevronBackCircleSharp size={40} className='mt-2 mb-2'/>
+  <BillingDetailsForm  onSave={onSave} initialData={initialData}/>
 </div> }
 
     </div>

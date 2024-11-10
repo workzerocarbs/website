@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../order/style.scss"
+import vegImage from '../../assets/images/veg.svg';
+import nonVegImage from '../../assets/images/non_veg.svg'
+import { GiCookingPot } from "react-icons/gi";
 const OrderSummary = ({
   cart,
   imageUrl,
@@ -19,13 +22,17 @@ const OrderSummary = ({
             <div key={item.id}>
                 <div className="orderSummary d-flex gap-2 w-100 p-2">
                   <div className="itemImageContainer d-flex">
-                    <img src={`${imageUrl}${item.image}`} alt={item.name} />
+                    {/* <img src={`${imageUrl}${item.image}`} alt={item.name} /> */}
                    
                   </div>
                   <div className='d-flex flex-column w-100'>
-                  <h6 className='mb-0'>{item.name}</h6>
+                 <div className='d-flex gap-2 align-items-center'>
+                 <h6 className='mb-0'>{item.name}</h6>
+                  <img className='food-type' src={item.type === 'veg' ? vegImage : nonVegImage}
+                                        alt={item.type === 'veg' ? 'Veg' : 'Non-Veg'} />
+                 </div>
                   <div className='d-flex justify-content-between align-items-center'>
-                 <span>Rs {item.totalPrice.toFixed(2)}</span> 
+                 <span className='fw-bold'>Rs {item.totalPrice.toFixed(2)}</span> 
                     <div className="quantity">
                       <button
                         className="btn decrementBtn"
@@ -49,11 +56,12 @@ const OrderSummary = ({
             </div>
           ))}
       
-      <div className="d-flex justify-content-end addMore mt-1">
+      <div className="d-flex justify-content-end self-align-center addMore mt-1">
         <Link to="/menu">Add More</Link>
       </div>
-      <div className="me-3 ms-3">
+      <div className="me-3 ms-3" style={{position: "relative"}}>
         <textarea id="additional-info" name="additional-info" rows="2" placeholder='Cooking Instruction'></textarea>
+        <GiCookingPot style={{position: "absolute", top: "3px", left: "3px"}} size={30} color='#9cd322'/>
       </div>
       </div>
       <div className="coupons">

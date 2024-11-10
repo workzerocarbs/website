@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import "../address/style.scss"
 function BillingDetailsForm({
-  initialData = {},
+  initialData,
   onSave,
 }) {
+  console.log("initialData", initialData)
   const [formData, setFormData] = useState({
     buildingHouseNo: initialData.buildingHouseNo || '',
     society: initialData.society || '',
@@ -26,11 +27,11 @@ function BillingDetailsForm({
   };
 
   return (
-    <div className="container p-3">
+    <div className="container p-3" style={{backgroundColor: "white"}}>
       <p className="mb-3 sub-section-header">Enter Address Details</p>
 
       <form onSubmit={handleSave}>
-        <div className="mb-2">
+        <div className="mb-3">
         
           <input
             type="text"
@@ -44,7 +45,7 @@ function BillingDetailsForm({
           />
         </div>
 
-        <div className="mb-2">
+        <div className="mb-3">
      
           <input
             type="text"
@@ -58,7 +59,7 @@ function BillingDetailsForm({
           />
         </div>
 
-        <div className="mb-2">
+        <div className="mb-3">
        
           <input
             type="text"
@@ -85,10 +86,10 @@ function BillingDetailsForm({
           />
         </div>
 
-        <div className="mb-2">
+        <div className="mb-3">
        
           <div className="d-flex gap-2 align-items-center">
-          <label className="form-label">Save as:</label>
+          <label className="form-label mb-0">Save as:</label>
             {['Home', 'Office', 'Other'].map((type) => (
               <React.Fragment key={type}>
                 <input
@@ -100,13 +101,13 @@ function BillingDetailsForm({
                   checked={formData.addressType === type}
                   onChange={handleChange}
                 />
-                <label className="btn btn-outline-primary" htmlFor={type}>{type}</label>
+                <label className="btn address-label-btn" htmlFor={type}>{type}</label>
               </React.Fragment>
             ))}
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary w-100 save-address-detail-btn">Save Address Details</button>
+        <button type="submit" className="btn  w-100 save-address-detail-btn text-black">Save Address Details</button>
       </form>
     </div>
   );

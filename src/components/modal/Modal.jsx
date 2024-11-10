@@ -9,7 +9,7 @@ const Modal = ({ isVisible, onClose, children, className }) => {
 
     return (
         <div className={`modal-overlay ${className}`}>
-            <div className="modal-content">
+            <div className={`modal-content ${className}`}>
                 <button className="close-button" onClick={onClose}><MdClose size={30}/></button>
                 {children}
             </div>
