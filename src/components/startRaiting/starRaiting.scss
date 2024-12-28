@@ -1,0 +1,33 @@
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  
+    .star {
+      font-size: 15px;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      position: relative;
+  
+      &.filled {
+        color: #FFD700; 
+      }
+  
+      &::after {
+        content: "★";
+        color: #FFD700;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        overflow: hidden;
+      }
+  
+      &.half::after {
+        width: 50%; 
+      }
+    }
+  }
+  
