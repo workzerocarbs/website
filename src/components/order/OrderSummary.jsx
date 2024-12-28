@@ -32,7 +32,7 @@ const OrderSummary = ({
                                         alt={item.type === 'veg' ? 'Veg' : 'Non-Veg'} />
                  </div>
                   <div className='d-flex justify-content-between align-items-center'>
-                 <span className='fw-bold'>Rs {item.totalPrice.toFixed(2)}</span> 
+                 <span className='fw-bold'>Rs {(item.totalPrice + item.total_toppings_price).toFixed(2)}</span> 
                     <div className="quantity">
                       <button
                         className="btn decrementBtn"
@@ -43,7 +43,7 @@ const OrderSummary = ({
                       <span>{item.quantity}</span>
                       <button
                         className="btn incrementBtn"
-                        onClick={() => handleIncrement(item.id)}
+                        onClick={() => handleIncrement(item)}
                       >
                         +
                       </button>

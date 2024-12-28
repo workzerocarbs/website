@@ -406,19 +406,26 @@ const Payment = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
       };
     
-    const handleIncrement = (dishId) => {
-        setCart(prevCart => {
-          const updatedCart = {
-            ...prevCart,
-            [dishId]: {
-              ...prevCart[dishId],
-              quantity: prevCart[dishId].quantity + 1,
-              totalPrice: Number((prevCart[dishId].quantity + 1) * prevCart[dishId].price),
-            },
-          };
-          saveCartToLocalStorage(updatedCart);
-          return updatedCart;
-        });
+    const handleIncrement = (dish) => {
+        const dishId = dish.id;
+        if(dish?.addons.length == 0){
+            setCart(prevCart => {
+                const updatedCart = {
+                  ...prevCart,
+                  [dishId]: {
+                    ...prevCart[dishId],
+                    quantity: prevCart[dishId].quantity + 1,
+                    totalPrice: Number((prevCart[dishId].quantity + 1) * prevCart[dishId].price),
+                  },
+                };
+                saveCartToLocalStorage(updatedCart);
+                return updatedCart;
+              });
+        }else {
+            navigate("/menu")
+            
+        }
+
       };
     
       const handleDecrement = (dishId) => {
@@ -444,7 +451,8 @@ const Payment = () => {
 
       const getTotalBill = () => {
         const itemTotal = Object.values(cart).reduce((total, item) => total + item.totalPrice, 0);
-        console.log(distance)
+        // console.log(distance)
+        console.log(itemTotal)
         const packagingCharges = distance < 3 ? 0 : 24.54;
         const gst = itemTotal * 0.05;
         const total = itemTotal + packagingCharges + gst;

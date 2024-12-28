@@ -1,0 +1,53 @@
+.zpt-add-button {
+    background-color: #D1E8A0; // Green color
+    color: #3A3A39;
+    border: 1px solid #99CC31 ;
+    padding: 0px 17px;
+    border-radius: 4px;
+    width: 70px;
+    height: 20px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    // &:hover {
+    //   background-color: #45a049;
+    // }
+  }
+  
+  .zpt-counter-container {
+    width: 70px;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 4px;
+    // gap: 8px;
+    background-color: #97CB2B;
+    
+  }
+  
+  .zpt-counter-decrease,
+  .zpt-counter-increase {
+    background-color:#97CB2B;
+    // border: 1px solid #ddd;
+    border: none;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    font-size: 0.7rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .zpt-counter-value {
+    // font-weight: bold;
+    text-align: center;
+    width: 10px;
+    // height: 25px;
+    padding: 0;
+    font-size: 0.7rem;
+    
+  }
