@@ -665,7 +665,7 @@ const Menu = () => {
               isSlidingPageOpen ? "open" : ""
             }`}
           >
-            <IoIosCloseCircleOutline color="white" size={30} />
+            <IoIosCloseCircleOutline color="white" size={40} />
           </div>
 
           {/* Sliding Page */}
@@ -682,7 +682,14 @@ const Menu = () => {
               </div>
 
               <div>
-                <FaShare />
+                <FaShare
+                size={20}
+                style={{cursor:"pointer"}}
+                  onClick={() => {
+                    setIsSlidingPageOpen(!isSlidingPageOpen);
+                    setDishAddOnData({});
+                  }}
+                />
               </div>
             </div>
             <div className="zpt-topings-container">

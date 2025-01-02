@@ -157,26 +157,48 @@
                     color: rgb(106, 106, 106);
                 }
 
-                .itemDetailsContainer{
-                    p{
+                .itemDetailsContainer {
+                    p {
                         margin-left: 20px;
                         margin-bottom: 3px;
-                        span{
-                            // font-weight: bold;
+                        font-size: 11px;  // default/mobile first font size
+                        
+                        @include xxl {
+                            font-size: 13px;
+                        }
+                
+                        @include xl {
+                            font-size: 13px;
+                        }
+                
+                        @include lg {
+                            font-size: 11px;
+                        }
+                
+                        @include md {
+                            font-size: 11px;
+                        }
+                
+                        @include sm {
+                            font-size: 11px;
+                        }
+                
+                        @include xs {
+                            font-size: 11px;
+                        }
+                
+                        span {
                             color: #1B1B1B;
                             font-weight: 400;
                             cursor: pointer;
                         }
-                        font-size: 11px;
                     }
-                    // float: left;
-                   
                 }
 
                 .itemDetails {
                     .bestSeller {
                         float: left;
-
+                
                         img {
                             width: 13px;
                             height: 13px;
@@ -184,19 +206,18 @@
                             margin-bottom: 5px;
                         }
                     }
-                    .raitingDiv{
+                    .raitingDiv {
                         margin-left: 20px;
                         top: 0;
-
-                        span{
+                
+                        span {
                             font-size: 12px;
                             box-sizing: border-box;
                             margin: 0;
                             padding: 0;
                         }
                     }
-
-
+                
                     h4 {
                         font-size: 18px;
                         margin-left: 20px;
@@ -205,31 +226,41 @@
                         color: #000000;
                         font-weight: 600;
                     }
-
+                
                     .price span {
                         background-color: rgb(128 128 128 / 6%);
                         border-radius: 5px;
-                        font-size: 11px;
-                        // font-weight: 700;
+                        font-size: 11px; // Default for all devices
                         padding: 4px 10px;
                         margin-left: 20px;
-                    }
-
-
-                    @include xs {
-                        h4{
+                
+                        // Adjust font size only for larger screens
+                        @include xl {
                             font-size: 12px;
-                            
+                        }
+                
+                        @include xxl {
+                            font-size: 12px;
+                        }
+                    }
+                
+                    @include xs {
+                        h4 {
+                            font-size: 12px;
                         }
                         .bestSeller {
-
-                            img{
+                            img {
                                 margin-bottom: 10px;
                             }
                         }
+                
+                        // Keep the font size smaller for small screens
+                        .price span {
+                            font-size: 11px !important; // Override larger breakpoints
+                        }
                     }
                 }
-
+                
                 .energyCalc {
                     // position: absolute;
                     display: flex;
@@ -961,7 +992,7 @@
         // margin-bottom: 10px;
 
         span:first-of-type{
-            font-weight: 500;
+            font-weight: 600;
             font-size: 1rem;
             color: #333;
             margin-bottom: 5px;
@@ -1005,6 +1036,7 @@
             
             span{
                 font-weight: 500;
+                
             }
             .zpt-toping-name {
                 flex-grow: 1;
@@ -1017,7 +1049,7 @@
                 appearance: none;
                 width: 18px;
                 height: 18px;
-                border: 2px solid  #97CB2B;// Reduced to 1px
+                border: 2px solid #97CB2B;
                 border-radius: 50%;
                 outline: none;
                 cursor: pointer;
@@ -1042,9 +1074,9 @@
                 &:checked {
                     border-color: #97CB2B;
                     padding: 0;
-                    
+            
                     &::before {
-                        width:14px; // Slightly smaller to fit perfectly inside
+                        width: 13px;
                         height: 13px;
                         background-color: #97CB2B;
                     }
@@ -1095,6 +1127,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: baseline;
+            
 
             img{
                 width: 12px;
@@ -1108,6 +1141,7 @@
                 align-items: center;
                 font-weight: 600;
                 font-size: 0.8rem;
+                // margin-bottom: 10px;
                 span {
                     margin-left: 5px;
                 }
@@ -1115,6 +1149,7 @@
             div:last-of-type{
                 display: flex;
                 flex-direction: column;
+                // margin-bottom: 7px;
                 font-size: 0.6rem;
                 justify-content: center;
                 align-items: center;
@@ -1124,6 +1159,7 @@
                     font-weight: 500;
                     margin-left: 27px;
                     margin-top: 3px;
+                    margin-bottom: 8px;
                 }
             }
         }

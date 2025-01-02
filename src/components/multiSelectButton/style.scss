@@ -4,8 +4,8 @@
     border: 1px solid #99CC31 ;
     padding: 0px 17px;
     border-radius: 4px;
-    width: 70px;
-    height: 20px;
+    width: 80px;
+    height: 25px;
     font-size: 0.7rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -16,8 +16,8 @@
   }
   
   .zpt-counter-container {
-    width: 70px;
-    height: 20px;
+    width: 80px;
+    height: 25px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,6 +40,7 @@
     justify-content: center;
     cursor: pointer;
     border-radius: 4px;
+
   }
   
   .zpt-counter-value {
